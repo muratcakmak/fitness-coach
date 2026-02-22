@@ -1,0 +1,24 @@
+name = "fitness-coach"
+main = "src/index.ts"
+compatibility_date = "2024-12-05"
+
+[[d1_databases]]
+binding = "DB"
+database_name = "fitness-coach-db"
+database_id = "your-database-id"
+
+[[kv_namespaces]]
+binding = "KV"
+id = "your-kv-namespace-id"
+
+[[r2_buckets]]
+binding = "PHOTOS"
+bucket_name = "fitness-coach-photos"
+
+[triggers]
+crons = ["0 * * * *"]
+
+[vars]
+BOT_NAME = "YourBotName"
+DEFAULT_TIMEZONE = "UTC"
+PHOTOS_PUBLIC_URL = "https://your-bucket.r2.dev"
