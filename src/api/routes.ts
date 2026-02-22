@@ -12,6 +12,7 @@ import {
   getFormChecks,
 } from "../db/queries";
 import { getPhotoUrl } from "../services/photos";
+import { todayDateString, weekStartDate } from "../utils/formatting";
 
 const corsHeaders = {
   "Access-Control-Allow-Origin": "*",
@@ -55,24 +56,33 @@ export async function handleApiRequest(request: Request, url: URL, env: Env): Pr
     if (path === "/api/summary") {
       const user = await getUser(env, tid);
       if (!user) return error("User not found", 404);
-      const today = new Date().toISOString().split("T")[0];
+      const today = todayDateString(user.timezone);
       const totals = await getDailyTotals(env, tid, today);
       const weekEnd = today;
-      const weekStart = new Date(Date.now() - 6 * 86400000).toISOString().split("T")[0];
+      const weekStart = weekStartDate(user.timezone);
       const weekly = await getWeeklyData(env, tid, weekStart, weekEnd);
       const latestWeight = await getLatestWeight(env, tid);
       return json({ user, totals, weekly, latestWeight });
     }
 
     if (path === "/api/meals") {
-      const date = url.searchParams.get("date") || new Date().toISOString().split("T")[0];
+      const user = await getUser(env, tid);
+      if (!user) return error("User not found", 404);
+      const date = url.searchParams.get("date") || todayDateString(user.timezone);
       const meals = await getTodayMeals(env, tid, date);
-      return json({ meals });
+      return json({
+        meals: meals.map((m) => ({
+          ...m,
+          ...(m.photo_key ? { url: getPhotoUrl(env, m.photo_key) } : {}),
+        })),
+      });
     }
 
     if (path === "/api/weekly") {
-      const end = url.searchParams.get("end") || new Date().toISOString().split("T")[0];
-      const start = url.searchParams.get("start") || new Date(Date.now() - 6 * 86400000).toISOString().split("T")[0];
+      const user = await getUser(env, tid);
+      if (!user) return error("User not found", 404);
+      const end = url.searchParams.get("end") || todayDateString(user.timezone);
+      const start = url.searchParams.get("start") || weekStartDate(user.timezone);
       const data = await getWeeklyData(env, tid, start, end);
       return json(data);
     }

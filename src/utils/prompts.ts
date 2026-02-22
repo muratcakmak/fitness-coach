@@ -127,8 +127,9 @@ For question/greeting data: {} (empty object)
 }
 
 export const FOOD_PHOTO_PROMPT = `Analyze this food photo and estimate the nutritional content.
-Return JSON: {"description": "...", "calories": N, "protein_g": N, "fat_g": N, "carbs_g": N, "meal_type": "..."}
-Be reasonable with portion sizes. If unsure, estimate conservatively. Describe the food briefly.`;
+Return JSON in this exact structure:
+{"intent": "meal", "data": {"description": "...", "calories": N, "protein_g": N, "fat_g": N, "carbs_g": N, "meal_type": "breakfast|lunch|dinner|snack"}, "reply": "Your coaching response with what was logged and updated daily totals (use Telegram markdown)"}
+Be reasonable with portion sizes. If unsure, estimate conservatively. Describe the food briefly in the description field.`;
 
 export const MORNING_CHECKIN_PROMPT = (user: User, yesterdayTotals: DailyTotals): string =>
   `Generate a brief morning check-in message for ${user.first_name ?? "the user"}.
@@ -157,10 +158,12 @@ If they're short on macros, suggest a specific food to close the gap. Max 3 sent
 };
 
 export const FORM_CHECK_PROMPT = `Analyze this exercise/workout form photo. Identify the exercise being performed, assess the form and posture, provide specific corrections if needed, and note any injury risks.
-Return JSON: {"exercise_name": "...", "feedback": "Detailed form analysis with corrections", "reply": "Concise Telegram reply with key feedback points"}`;
+Return JSON in this exact structure:
+{"intent": "question", "data": {"exercise_name": "...", "feedback": "Detailed form analysis with corrections"}, "reply": "Concise Telegram reply with key feedback points"}`;
 
 export const NUTRITION_LABEL_PROMPT = `Read this nutrition label photo and extract the exact nutritional values shown.
-Return JSON: {"description": "Product name/description", "calories": N, "protein_g": N, "fat_g": N, "carbs_g": N, "meal_type": "snack", "reply": "Confirmation message showing extracted values"}`;
+Return JSON in this exact structure:
+{"intent": "meal", "data": {"description": "Product name/description", "calories": N, "protein_g": N, "fat_g": N, "carbs_g": N, "meal_type": "snack"}, "reply": "Confirmation message showing extracted values"}`;
 
 export const WEEKLY_REPORT_PROMPT = (user: User, weekData: string, checkInStatus?: { hasProgressPhoto: boolean; hasWeighIn: boolean; latestWeightKg: number | null; photoCompliancePct: number }): string => {
   let checkInLines = "";

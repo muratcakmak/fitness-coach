@@ -9,7 +9,8 @@
     "deploy": "wrangler deploy",
     "db:migrate": "wrangler d1 execute fitness-coach-db --local --file=src/db/schema.sql",
     "db:migrate:remote": "wrangler d1 execute fitness-coach-db --remote --file=src/db/schema.sql",
-    "set-webhook": "npx tsx scripts/set-webhook.ts"
+    "set-webhook": "npx tsx scripts/set-webhook.ts",
+    "test": "vitest run"
   },
   "dependencies": {
     "grammy": "^1.31.0",
@@ -19,6 +20,7 @@
     "@cloudflare/workers-types": "^4.20241205.0",
     "tsx": "^4.19.0",
     "typescript": "^5.7.0",
+    "vitest": "^4.0.18",
     "wrangler": "^3.99.0"
   }
 }

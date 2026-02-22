@@ -247,6 +247,33 @@ Then try:
 - `/tip` → random Huberman or Ferriss quote
 - `/report` → today's progress with visual bars
 
+### 9. Register bot commands with Telegram
+
+This makes the command menu (/) appear in the Telegram UI:
+
+```bash
+TELEGRAM_BOT_TOKEN=<your-token> npx tsx scripts/set-commands.ts
+```
+
+## Testing
+
+The project uses [Vitest](https://vitest.dev) for unit tests covering LLM response parsing, timezone utilities, API routes, and prompt structure.
+
+```bash
+npm test          # Run all tests
+npx vitest        # Watch mode
+```
+
+## Claude Code Hook
+
+A post-edit hook in `.claude/settings.json` automatically runs tests and deploys after every file edit:
+
+```
+Edit/Write → npx vitest run → npx wrangler deploy
+```
+
+Deploy only happens if all tests pass.
+
 ## Local Development
 
 ```bash

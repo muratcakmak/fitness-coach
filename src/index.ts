@@ -23,6 +23,28 @@ export default {
       }
     }
 
+    // One-time setup: register bot commands with Telegram
+    if (url.pathname === `/setup/${env.WEBHOOK_SECRET}` && request.method === "POST") {
+      const commands = [
+        { command: "report", description: "Today's nutrition & workout summary" },
+        { command: "weekly", description: "Weekly trends & progress report" },
+        { command: "progress", description: "Save a progress photo (attach photo)" },
+        { command: "formcheck", description: "AI exercise form feedback (attach photo)" },
+        { command: "label", description: "Scan a nutrition label (attach photo)" },
+        { command: "timezone", description: "Set your timezone" },
+        { command: "tip", description: "Get a Huberman or Ferriss tip" },
+        { command: "help", description: "Show all commands & usage" },
+        { command: "start", description: "Start onboarding / reset profile" },
+      ];
+      const res = await fetch(`https://api.telegram.org/bot${env.TELEGRAM_BOT_TOKEN}/setMyCommands`, {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ commands }),
+      });
+      const result = await res.json();
+      return new Response(JSON.stringify(result), { headers: { "Content-Type": "application/json" } });
+    }
+
     // Health check
     if (url.pathname === "/health") {
       return new Response("OK", { status: 200 });

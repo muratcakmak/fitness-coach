@@ -56,6 +56,16 @@ export async function parseFoodPhoto(
   if (parsed.intent !== "meal") {
     parsed.intent = "meal";
   }
+
+  // Save photo context so follow-up text messages have context
+  const context = await getConversationContext(env, user.telegram_id);
+  const userMsg = caption ? `[Food photo] ${caption}` : "[Food photo]";
+  await saveConversationContext(env, user.telegram_id, [
+    ...context,
+    { role: "user", content: userMsg },
+    { role: "assistant", content: parsed.reply },
+  ]);
+
   return parsed;
 }
 

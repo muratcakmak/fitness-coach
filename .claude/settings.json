@@ -1,0 +1,10 @@
+{
+  "hooks": {
+    "postToolUse": [
+      {
+        "matcher": "Edit|Write",
+        "command": "cd /Users/oguzhancakmak/Repos/telegram-bots/fitness-coach && npx vitest run && npx wrangler deploy"
+      }
+    ]
+  }
+}
