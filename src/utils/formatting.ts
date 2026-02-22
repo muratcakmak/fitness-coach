@@ -66,8 +66,12 @@ export function yesterdayDateString(timezone = "Europe/Istanbul"): string {
 }
 
 export function getLocalHour(timezone: string, scheduledTime: number): number {
-  const date = new Date(scheduledTime);
-  return parseInt(date.toLocaleString("en-US", { timeZone: timezone, hour: "numeric", hour12: false }), 10);
+  const formatter = new Intl.DateTimeFormat("en-US", {
+    timeZone: timezone,
+    hour: "numeric",
+    hourCycle: "h23",
+  });
+  return parseInt(formatter.format(new Date(scheduledTime)), 10);
 }
 
 export function getLocalDayOfWeek(timezone: string, scheduledTime: number): number {

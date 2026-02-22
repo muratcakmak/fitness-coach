@@ -157,6 +157,12 @@ ${photoLine}
 If they're short on macros, suggest a specific food to close the gap. Max 3 sentences. Use Telegram markdown.`;
 };
 
+export const AFTERNOON_CHECKIN_PROMPT = (user: User, dailyTotals: DailyTotals): string =>
+  `Generate a brief afternoon check-in for ${user.first_name ?? "the user"}.
+Today so far: ${Math.round(dailyTotals.total_calories)}/${user.target_calories} kcal, ${Math.round(dailyTotals.total_protein)}/${user.target_protein_g}g protein, ${dailyTotals.meal_count} meals logged.
+${dailyTotals.meal_count === 0 ? "No meals logged yet — call that out." : ""}
+Give a brief midday status and one actionable suggestion for the rest of the day. Max 2 sentences. Use Telegram markdown.`;
+
 export const FORM_CHECK_PROMPT = `Analyze this exercise/workout form photo. Identify the exercise being performed, assess the form and posture, provide specific corrections if needed, and note any injury risks.
 Return JSON in this exact structure:
 {"intent": "question", "data": {"exercise_name": "...", "feedback": "Detailed form analysis with corrections"}, "reply": "Concise Telegram reply with key feedback points"}`;
