@@ -55,14 +55,20 @@ export function weekStartDate(timezone = "Europe/Istanbul"): string {
   const day = local.getDay();
   const diff = day === 0 ? 6 : day - 1; // Monday start
   local.setDate(local.getDate() - diff);
-  return local.toISOString().split("T")[0];
+  const y = local.getFullYear();
+  const m = String(local.getMonth() + 1).padStart(2, "0");
+  const d = String(local.getDate()).padStart(2, "0");
+  return `${y}-${m}-${d}`;
 }
 
 export function yesterdayDateString(timezone = "Europe/Istanbul"): string {
   const now = new Date();
   const local = new Date(now.toLocaleString("en-US", { timeZone: timezone }));
   local.setDate(local.getDate() - 1);
-  return local.toISOString().split("T")[0];
+  const y = local.getFullYear();
+  const m = String(local.getMonth() + 1).padStart(2, "0");
+  const d = String(local.getDate()).padStart(2, "0");
+  return `${y}-${m}-${d}`;
 }
 
 export function getLocalHour(timezone: string, scheduledTime: number): number {
