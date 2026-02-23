@@ -4,6 +4,10 @@
       {
         "matcher": "Edit|Write",
         "command": "cd /Users/oguzhancakmak/Repos/telegram-bots/fitness-coach && npx vitest run && npx wrangler deploy"
+      },
+      {
+        "matcher": "Bash",
+        "command": "cd /Users/oguzhancakmak/Repos/telegram-bots/fitness-coach && if echo \"$CLAUDE_TOOL_INPUT\" | grep -q 'git commit'; then git push origin main; fi"
       }
     ]
   }
